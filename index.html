@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spice & Tradition</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --cream: #F7F3EC;
+    --ink: #1C1A17;
+    --ink-muted: #6B6459;
+    --ink-faint: #B5AFA6;
+    --indian: #C45C2A;
+    --indian-bg: #FDF0E8;
+    --chinese: #A32D2D;
+    --chinese-bg: #FAEAEA;
+    --border: rgba(28,26,23,0.12);
+    --border-hover: rgba(28,26,23,0.28);
+    --r1: #2563A8;
+    --r2: #9A5A0A;
+    --r3: #2D7A3A;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem 2rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+ 
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+ 
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+ 
+  .badge-group {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+ 
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+  }
+ 
+  .subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--ink-muted);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+ 
+  .intro {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    max-width: 560px;
+    border-left: 2px solid var(--border-hover);
+    padding-left: 14px;
+    font-style: italic;
+  }
+ 
+  /* ── MAIN ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+ 
+  /* ── HOME VIEW ── */
+  .group { margin-bottom: 2.5rem; }
+ 
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+ 
+  .group-name {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+ 
+  .group-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+ 
+  .dish-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+ 
+  .dish-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+ 
+  .dish-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(28,26,23,0.07);
+  }
+ 
+  .dish-img {
+    width: 100%;
+    height: 160px;
+    background: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+ 
+  .dish-img-placeholder {
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+    line-height: 1.5;
+  }
+ 
+  .dish-img-icon {
+    font-size: 28px;
+    opacity: 0.25;
+  }
+ 
+  .cuisine-pill {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+ 
+  .pill-indian { background: var(--indian-bg); color: var(--indian); }
+  .pill-chinese { background: var(--chinese-bg); color: var(--chinese); }
+ 
+  .dish-info { padding: 12px 14px 14px; }
+ 
+  .dish-name {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+ 
+  .round-dots { display: flex; gap: 5px; align-items: center; }
+ 
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    transition: background 0.2s;
+  }
+ 
+  .dot.done { background: var(--ink); border-color: var(--ink); }
+  .dot.pending { background: var(--cream); border-color: var(--ink-faint); }
+ 
+  .dot-label {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-left: 4px;
+  }
+ 
+  /* ── DETAIL VIEW ── */
+  #detail-view { display: none; }
+ 
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--sans);
+    margin-bottom: 1.75rem;
+    transition: color 0.15s;
+  }
+ 
+  .back-btn:hover { color: var(--ink); }
+ 
+  .detail-header { margin-bottom: 2rem; }
+ 
+  .detail-cuisine {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+  }
+ 
+  .detail-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+ 
+  .detail-sub {
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+ 
+  /* ── ROUND SECTIONS ── */
+  .round-section {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+ 
+  .round-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+  }
+ 
+  .round-num {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+ 
+  .rn-1 { background: #EBF2FB; color: var(--r1); }
+  .rn-2 { background: #FDF0DC; color: var(--r2); }
+  .rn-3 { background: #E8F5EA; color: var(--r3); }
+ 
+  .round-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+ 
+  .round-status {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+ 
+  .round-body { padding: 18px; background: #fff; }
+ 
+  /* Photo strip */
+  .photo-strip {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+ 
+  .photo-slot {
+    flex: 0 0 110px;
+    height: 82px;
+    border: 1px dashed var(--border-hover);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--cream);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+ 
+  .photo-slot:hover { border-color: var(--ink-muted); background: #F0EBE3; }
+ 
+  .photo-slot-icon { font-size: 18px; opacity: 0.3; }
+ 
+  .photo-slot-text {
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+    line-height: 1.4;
+  }
+ 
+  /* Write-up */
+  .writeup { margin-bottom: 14px; }
+ 
+  .writeup p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+ 
+  .writeup p:last-child { margin-bottom: 0; }
+ 
+  .writeup-placeholder {
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+    line-height: 1.7;
+    border-left: 2px solid var(--border);
+    padding-left: 12px;
+  }
+ 
+  /* Recipe link */
+  .recipe-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+ 
+  .recipe-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+    background: var(--cream);
+  }
+ 
+  .recipe-link:hover { border-color: var(--border-hover); color: var(--ink); }
+ 
+  /* Takeaways */
+  .takeaways { padding-top: 14px; border-top: 1px solid var(--border); }
+ 
+  .takeaway-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+ 
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+ 
+  .tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+    background: var(--cream);
+  }
+ 
+  .tag.good {
+    background: #E8F5EA;
+    color: #2D7A3A;
+    border-color: #B6DFB9;
+  }
+ 
+  .tag.placeholder {
+    color: var(--ink-faint);
+    border-style: dashed;
+  }
+ 
+  /* Pending round */
+  .round-pending {
+    background: var(--cream);
+    padding: 24px 18px;
+    text-align: center;
+  }
+ 
+  .pending-text {
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+ 
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+ 
+  .footer-title {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--ink-muted);
+  }
+ 
+  .footer-sub { font-size: 12px; color: var(--ink-faint); }
+ 
+  /* ── RESPONSIVE ── */
+  @media (max-width: 520px) {
+    header, main, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .dish-grid { grid-template-columns: 1fr; }
+    .dish-img { height: 130px; }
+  }
+</style>
+</head>
+<body>
+ 
+<header>
+  <div class="header-top">
+    <h1>Spice &amp; Tradition</h1>
+    <div class="badge-group">
+      <span class="badge">8 dishes</span>
+      <span class="badge">3 rounds</span>
+    </div>
+  </div>
+  <p class="subtitle">A Regional Journey Through Indian and Chinese Home Cooking.</p>
+  <p class="intro">We grew up on opposite sides of the same feeling — a dish that meant home, made without a recipe. This is our attempt to finally learn how to make those dishes ourselves.</p>
+</header>
+ 
+<main>
+  <!-- HOME VIEW -->
+  <div id="home-view">
+ 
+    <div class="group">
+      <div class="group-header">
+        <span class="group-name">Dumplings</span>
+        <div class="group-line"></div>
+      </div>
+      <div class="dish-grid">
+        <div class="dish-card" onclick="showDetail(0)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🥟</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-indian">Indian</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Momos</div>
+            <div class="round-dots">
+              <div class="dot done" title="Round 1 complete"></div>
+              <div class="dot done" title="Round 2 complete"></div>
+              <div class="dot done" title="Round 3 complete"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+        <div class="dish-card" onclick="showDetail(1)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🥟</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-chinese">Chinese</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Potstickers</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="group">
+      <div class="group-header">
+        <span class="group-name">Vegetable Sides</span>
+        <div class="group-line"></div>
+      </div>
+      <div class="dish-grid">
+        <div class="dish-card" onclick="showDetail(2)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🥗</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-indian">Indian</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Vegetable Sabzi</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+        <div class="dish-card" onclick="showDetail(3)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🥦</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-chinese">Chinese</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Stir Fried Vegetables</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="group">
+      <div class="group-header">
+        <span class="group-name">Saucy Mains</span>
+        <div class="group-line"></div>
+      </div>
+      <div class="dish-grid">
+        <div class="dish-card" onclick="showDetail(4)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🍗</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-indian">Indian</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Butter Chicken</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+        <div class="dish-card" onclick="showDetail(5)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🍖</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-chinese">Chinese</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Red Braised Pork</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="group">
+      <div class="group-header">
+        <span class="group-name">Staples</span>
+        <div class="group-line"></div>
+      </div>
+      <div class="dish-grid">
+        <div class="dish-card" onclick="showDetail(6)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🍛</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-indian">Indian</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Keema</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+        <div class="dish-card" onclick="showDetail(7)">
+          <div class="dish-img">
+            <span class="dish-img-icon">🍚</span>
+            <span class="dish-img-placeholder">Add dish photo</span>
+            <span class="cuisine-pill pill-chinese">Chinese</span>
+          </div>
+          <div class="dish-info">
+            <div class="dish-name">Fried Rice</div>
+            <div class="round-dots">
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <div class="dot done"></div>
+              <span class="dot-label">3 rounds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div><!-- /home-view -->
+ 
+  <!-- DETAIL VIEW -->
+  <div id="detail-view">
+    <button class="back-btn" onclick="showHome()">← All dishes</button>
+ 
+    <div class="detail-header">
+      <div class="detail-cuisine" id="detail-cuisine"></div>
+      <div class="detail-title" id="detail-title"></div>
+      <div class="detail-sub">3 rounds · document your process below</div>
+    </div>
+ 
+    <!-- Round 1 -->
+    <div class="round-section">
+      <div class="round-head">
+        <span class="round-num rn-1">Round 1</span>
+        <span class="round-label">First attempt</span>
+        <span class="round-status">Complete</span>
+      </div>
+      <div class="round-body">
+        <div class="photo-strip">
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+        </div>
+        <div class="writeup">
+          <p class="writeup-placeholder">Add your Round 1 write-up here — what you tried, how the dish came out, what surprised you, and what recipe you followed.</p>
+        </div>
+        <div class="recipe-row">
+          <a href="#" class="recipe-link">↗ Recipe source</a>
+        </div>
+        <div class="takeaways">
+          <div class="takeaway-label">Takeaways</div>
+          <div class="tag-row">
+            <span class="tag placeholder">+ Add takeaway</span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Round 2 -->
+    <div class="round-section">
+      <div class="round-head">
+        <span class="round-num rn-2">Round 2</span>
+        <span class="round-label">Adjustments</span>
+        <span class="round-status">Complete</span>
+      </div>
+      <div class="round-body">
+        <div class="photo-strip">
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+        </div>
+        <div class="writeup">
+          <p class="writeup-placeholder">Add your Round 2 write-up here — what you changed based on Round 1, what improved, and what still needs work.</p>
+        </div>
+        <div class="recipe-row">
+          <a href="#" class="recipe-link">↗ Recipe source</a>
+        </div>
+        <div class="takeaways">
+          <div class="takeaway-label">Takeaways</div>
+          <div class="tag-row">
+            <span class="tag placeholder">+ Add takeaway</span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Round 3 -->
+    <div class="round-section">
+      <div class="round-head">
+        <span class="round-num rn-3">Round 3</span>
+        <span class="round-label">Final version</span>
+        <span class="round-status">Complete</span>
+      </div>
+      <div class="round-body">
+        <div class="photo-strip">
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+          <div class="photo-slot">
+            <span class="photo-slot-icon">📷</span>
+            <span class="photo-slot-text">Add photo</span>
+          </div>
+        </div>
+        <div class="writeup">
+          <p class="writeup-placeholder">Add your Round 3 write-up here — your final reflection, how far you came from Round 1, and your honest assessment of the result.</p>
+        </div>
+        <div class="recipe-row">
+          <a href="#" class="recipe-link">↗ Recipe source</a>
+        </div>
+        <div class="takeaways">
+          <div class="takeaway-label">Takeaways</div>
+          <div class="tag-row">
+            <span class="tag placeholder">+ Add takeaway</span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div><!-- /detail-view -->
+</main>
+ 
+<footer>
+  <span class="footer-title">Spice &amp; Tradition</span>
+  <span class="footer-sub">Senior Project · 8 dishes · 3 rounds</span>
+</footer>
+ 
+<script>
+  const dishes = [
+    { name: "Momos",                cuisine: "Indian",  type: "indian"  },
+    { name: "Potstickers",          cuisine: "Chinese", type: "chinese" },
+    { name: "Vegetable Sabzi",      cuisine: "Indian",  type: "indian"  },
+    { name: "Stir Fried Vegetables",cuisine: "Chinese", type: "chinese" },
+    { name: "Butter Chicken",       cuisine: "Indian",  type: "indian"  },
+    { name: "Red Braised Pork",     cuisine: "Chinese", type: "chinese" },
+    { name: "Keema",                cuisine: "Indian",  type: "indian"  },
+    { name: "Fried Rice",           cuisine: "Chinese", type: "chinese" },
+  ];
+ 
+  function showDetail(i) {
+    document.getElementById("home-view").style.display = "none";
+    document.getElementById("detail-view").style.display = "block";
+ 
+    const d = dishes[i];
+    const cuisineEl = document.getElementById("detail-cuisine");
+    cuisineEl.textContent = d.cuisine;
+    cuisineEl.className = "detail-cuisine " + (d.type === "indian" ? "pill-indian" : "pill-chinese");
+    document.getElementById("detail-title").textContent = d.name;
+ 
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+ 
+  function showHome() {
+    document.getElementById("detail-view").style.display = "none";
+    document.getElementById("home-view").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
+</body>
+</html>
+ 
